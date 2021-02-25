@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="{{asset('bower_components/admin-lte/dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    {{--noty--}}
+    <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/noty/noty.css') }}">
+    <script src="{{ asset('bower_components/admin-lte/plugins/noty/noty.min.js') }}"></script>
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -186,13 +190,20 @@ to get the desired effect
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.index') }}" class="nav-link active">
+                            <a href="{{ route('dashboard.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.users.index') }}" class="nav-link">
+                                <p>
+                                    Admins
+                                </p>
+                            </a>
                         </li>
 
 
@@ -220,6 +231,7 @@ to get the desired effect
                     @yield('content')
 
                 </div>
+                @include('partials._session')
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content -->
