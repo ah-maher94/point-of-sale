@@ -8,14 +8,27 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+
+    public function __construct(){
+        $this->middleware('permission:users_read')->only('index');
+        $this->middleware('permission:users_create')->only('create');
+        $this->middleware('permission:users_update')->only('edit');
+        $this->middleware('permission:users_delete')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::whereRoleIs('admin')->when($request->search, function($query) use ($request){
+            return $query->where('first_name', 'like', '%'.$request->search.'%')
+            ->orWhere('last_name', 'like', '%'.$request->search.'%');
+        })->get();
+
         return view('dashboard.users.index', compact('users'));
     }
 
@@ -45,10 +58,13 @@ class UserController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        $request_data = $request->except(['password', 'password_confirmation']);
+        $request_data = $request->except(['password', 'password_confirmation', 'permission']);
         $request_data['password'] = bcrypt($request->password);
 
-        User::create($request_data);
+        $user = User::create($request_data);
+        $user->attachRole('admin'); 
+        $user->syncPermissions($request->permission);
+
         session()->flash('success', ('User added successfully'));
         return redirect()->route('dashboard.users.index');
 
@@ -63,7 +79,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('dashboard.users.edit', compact('user'));
     }
 
     /**
@@ -75,7 +91,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+        ]);
+
+        $request_data = $request->except(['permission']);
+        $user->update($request_data);
+        $user->syncPermissions($request->permission);
+
+        session()->flash('success', ('User updated successfully'));
+        return redirect()->route('dashboard.users.index');
     }
 
     /**

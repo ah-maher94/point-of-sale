@@ -23,8 +23,6 @@
     <div class="card-header">
         <h3 class="card-title">Add User</h3>
     </div>
-    <!-- /.card-header -->
-    <!-- form start -->
 
     @include('partials._errors')
 
@@ -56,6 +54,49 @@
                 <label>Confirm Password</label>
                 <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password"
                     autocomplete="off">
+            </div>
+
+            @php
+            $models = ['users', 'categories', 'products'];
+            $permissions = ['create', 'read', 'update', 'delete'];
+            @endphp
+
+            <div class="col-12 col-sm-6">
+                <div class="card card-primary card-tabs">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                            @foreach ($models as $index => $model)
+                            <li class="nav-item">
+                                <a class="nav-link {{ $index==0 ? 'active' : '' }}" data-toggle="pill"
+                                    href="#{{$model}}" role="tab" aria-controls="custom-tabs-one-home"
+                                    aria-selected="true">{{ $model }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+
+                            @foreach ($models as $index => $model)
+                            <div class="tab-pane fade {{ $index==0 ? 'show active' : '' }}" id="{{$model}}"
+                                role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+
+                                @foreach ($permissions as $permission)
+                                <div class="form-check mr-3" style="display: inline-block">
+                                    <input type="checkbox" class="form-check-input" name="permission[]"
+                                        value="{{ $model . '_' . $permission}}">
+                                    <label class="form-check-label">{{$permission}}</label>
+                                </div>
+                                @endforeach
+
+                            </div>
+
+                            @endforeach
+
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
             </div>
 
         </div>

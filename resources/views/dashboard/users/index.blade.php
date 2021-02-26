@@ -19,13 +19,33 @@
 </section>
 
 
+<!-- SEARCH FORM -->
+<form class="form-inline ml-3" method="GET" action="{{ route('dashboard.users.index') }}">
+    <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" name="search" placeholder="Search"
+            aria-label="Search">
+        <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
 
 <div class="card-body">
 
+    @if (auth()->user()->hasPermission('users_create'))
     <div class="row">
-        <a href=" {{ route('dashboard.users.create') }} " class="btn btn-primary mb-2"><i class="fa fa-plus">
-                Add</i></a>
+        <a href=" {{ route('dashboard.users.create') }} " class="btn btn-primary mb-2">
+            <i class="fa fa-plus">Add</i></a>
     </div>
+    @else
+    <div class="row">
+        <a href="#" class="btn btn-primary mb-2 disabled">
+            <i class="fa fa-plus">Add</i></a>
+    </div>
+    @endif
+
 
 
 
@@ -47,13 +67,25 @@
             <th>{{ $user->last_name }}</th>
             <th>{{ $user->email }}</th>
             <th>
-                <a href=" {{ route('dashboard.users.edit', $user->id) }} " class="btn btn-info btn-sm">Edit</a>
+                @if (auth()->user()->hasPermission('users_update'))
+                <a href=" {{ route('dashboard.users.edit', $user->id) }} " class="btn btn-info btn-sm"><i
+                        class="fa fa-edit"></i> Edit</a>
+                @else
+                <button class="btn btn-info btn-sm" type="submit" disabled><i class="fa fa-edit"></i> Edit</button>
+                @endif
+
+                @if (auth()->user()->hasPermission('users_delete'))
                 <form method="POST" action=" {{ route('dashboard.users.destroy', $user->id) }} "
                     style="display: inline-block">
                     @csrf
                     @method('delete')
-                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                    <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Delete</button>
                 </form>
+                @else
+                <button class="btn btn-danger btn-sm" type="submit" disabled><i class="fa fa-trash"></i> Delete</button>
+                @endif
+
+
             </th>
         </tr>
         @endforeach
