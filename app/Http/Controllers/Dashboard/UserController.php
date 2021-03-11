@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
@@ -24,10 +26,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::whereRoleIs('admin')->when($request->search, function($query) use ($request){
+        $users = User::when($request->search, function($query) use ($request){
             return $query->where('first_name', 'like', '%'.$request->search.'%')
             ->orWhere('last_name', 'like', '%'.$request->search.'%');
-        })->get();
+        })->whereRoleIs('admin')->latest()->paginate(5);
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -58,9 +60,18 @@ class UserController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        $request_data = $request->except(['password', 'password_confirmation', 'permission']);
-        $request_data['password'] = bcrypt($request->password);
+        if($request->image){
+            Image::make($request->image)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path('uploads/images/'.$request->image->hashName()));
+        }
 
+
+        $request_data = $request->except(['password', 'password_confirmation', 'permission', 'image']);
+        $request_data['password'] = bcrypt($request->password);
+        $request_data['image'] = $request->image->hashName();
+
+        
         $user = User::create($request_data);
         $user->attachRole('admin'); 
         $user->syncPermissions($request->permission);
@@ -113,6 +124,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if($user->image != "default.jpg"){
+            Storage::disk('public_uploads')->delete("/images/". $user->image);
+        }
+        $user->delete();
+        return redirect()->route('dashboard.users.index');
     }
 }

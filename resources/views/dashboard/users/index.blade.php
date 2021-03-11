@@ -23,7 +23,7 @@
 <form class="form-inline ml-3" method="GET" action="{{ route('dashboard.users.index') }}">
     <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" name="search" placeholder="Search"
-            aria-label="Search">
+            aria-label="Search" value="{{ request()->search }}">
         <div class="input-group-append">
             <button class="btn btn-navbar" type="submit">
                 <i class="fa fa-search"></i>
@@ -55,6 +55,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -66,6 +67,7 @@
             <th>{{ $user->first_name }}</th>
             <th>{{ $user->last_name }}</th>
             <th>{{ $user->email }}</th>
+            <th><img src="{{ $user->image_path }}" class="img-thumbnail" style="width: 100px;"></th>
             <th>
                 @if (auth()->user()->hasPermission('users_update'))
                 <a href=" {{ route('dashboard.users.edit', $user->id) }} " class="btn btn-info btn-sm"><i
@@ -79,7 +81,8 @@
                     style="display: inline-block">
                     @csrf
                     @method('delete')
-                    <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                    <button class="btn btn-danger btn-sm delete" type="submit">
+                        <i class="fa fa-trash"></i>Delete</button>
                 </form>
                 @else
                 <button class="btn btn-danger btn-sm" type="submit" disabled><i class="fa fa-trash"></i> Delete</button>
@@ -95,6 +98,9 @@
 
         </tbody>
     </table>
+
+    {{ $users->appends(request()->query())->links() }}
+
 </div>
 
 @endsection

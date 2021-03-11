@@ -23,6 +23,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'image'
     ];
 
     /**
@@ -34,6 +35,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['image_path'];
 
     /**
      * The attributes that should be cast to native types.
@@ -50,5 +53,9 @@ class User extends Authenticatable
     
     public function getLastNameAttribute($value){
         return ucfirst($value);
+    }
+
+    public function getImagePathAttribute(){
+        return asset('uploads/images/'. $this->image);
     }
 }

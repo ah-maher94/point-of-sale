@@ -261,4 +261,26 @@ to get the desired effect
     <script src="{{asset('bower_components/admin-lte/dist/js/pages/dashboard3.js')}}"></script>
 </body>
 
+<script>
+    $('.delete').click(function(e){
+        var del = $(this);
+        e.preventDefault();
+        
+        var notify = new Noty({  
+            text: "Confirm delete?",
+            type: "warning",
+            killer: true,
+            buttons:[
+                Noty.button('Yes', 'btn btn-primary btn-md mr-3', function(){
+                    del.closest('form').submit();
+                }),
+                Noty.button('No', 'btn btn-danger btn-md', function(){
+                    notify.close();
+                })
+        ]
+        }).show();
+    });
+
+</script>
+
 </html>
