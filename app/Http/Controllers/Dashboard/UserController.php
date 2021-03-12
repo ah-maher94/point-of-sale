@@ -43,7 +43,7 @@ class UserController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required|confirmed',
             'image'=> 'image',
             'permission'=> 'required',
@@ -83,10 +83,11 @@ class UserController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email,'.$user->id,
             'image'=> 'image',
             'permission'=> 'required',
         ]);
+        $request_data = $request->except(['permission', 'image']);
 
         if($request->image){
             if($request->image != "default.jpg"){
@@ -94,11 +95,11 @@ class UserController extends Controller
             }
             Image::make($request->image)->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path('uploads/images/'.$request->image->hashName()));
+            })->save(public_path('uploads/images/'.$request->image->hashName()));   
+            $request_data['image'] = $request->image->hashName();
         }
 
-        $request_data = $request->except(['permission', 'image']);
-        $request_data['image'] = $request->image->hashName();
+
         $user->update($request_data);
         $user->syncPermissions($request->permission);
 
