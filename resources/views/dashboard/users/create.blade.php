@@ -48,7 +48,11 @@
             </div>
             <div class="form-group">
                 <label>Profile Image</label>
-                <input type="file" name="image" class="form-control" autocomplete="off">
+                <input type="file" name="image" class="form-control profile-img" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <img src={{ asset('uploads/images/default.jpg') }} style="width:100px;"
+                    class="img-thumbnail profile-img-preview">
             </div>
             <div class="form-group">
                 <label>Password</label>

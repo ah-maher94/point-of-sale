@@ -281,6 +281,24 @@ to get the desired effect
         }).show();
     });
 
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+        $('.profile-img-preview').attr('src', e.target.result);
+        }
+        
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+    }
+    }
+
+    $(".profile-img").change(function() {
+        readURL(this);
+    });
+
+
+
 </script>
 
 </html>

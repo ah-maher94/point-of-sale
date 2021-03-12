@@ -28,7 +28,7 @@
 
     @include('partials._errors')
 
-    <form method="POST" action=" {{ route('dashboard.users.update', $user->id )}} ">
+    <form method="POST" action=" {{ route('dashboard.users.update', $user->id )}} " enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -47,6 +47,13 @@
                 <label>Email address</label>
                 <input type="email" name="email" class="form-control" placeholder="Enter email" autocomplete="off"
                     value="{{ $user->email }}">
+            </div>
+            <div class="form-group">
+                <label>Profile Image</label>
+                <input type="file" name="image" class="form-control profile-img" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <img src={{ $user->image_path }} style="width:100px;" class="img-thumbnail profile-img-preview">
             </div>
 
             @php
