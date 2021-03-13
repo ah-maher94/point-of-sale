@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -11,5 +12,6 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
 
     Route::resource('users', 'UserController', ['except'=>['show']]);
     Route::resource('categories', 'CategoryController', ['except'=>['show']]);
+    Route::resource('products', 'ProductController', ['except'=>['show']]);
 
 });
