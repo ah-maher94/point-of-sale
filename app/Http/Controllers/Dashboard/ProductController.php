@@ -16,8 +16,14 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = Product::paginate(5);
-        return view('dashboard.products.index', compact('products'));
+        $categories = Category::all();
+        $products = Product::when($request->search, function($query) use ($request){
+            return $query->where('name', 'like', '%'.$request->search.'%');
+        })->when($request->category_id, function($query) use ($request){
+            return $query->where('category_id', $request->category_id);
+        })->latest()->paginate(5);
+
+        return view('dashboard.products.index', compact('products', 'categories'));
     }
 
     public function create()
@@ -29,7 +35,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:3',
+            'name' => 'required|min:3|unique:products,name',
             'description' => 'required',
             'image' => 'image',
             'purchase_price' => 'required',
@@ -63,7 +69,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|min:3',
+            'name' => 'required|min:3|unique:products,name,'.$product->id,
             'description' => 'required',
             'image' => 'image',
             'purchase_price' => 'required',
@@ -93,6 +99,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        Storage::disk('public_uploads')->delete('/products/'. $product->image);
         $product->delete();
         return redirect()->route('dashboard.products.index');
     }

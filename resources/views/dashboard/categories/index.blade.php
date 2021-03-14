@@ -53,25 +53,30 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Products</th>
                 <th>Actions</th>
             </tr>
         </thead>
         @if ($categories->count()==0)
         <h1>No Data Found</h1>
         @else
-        @foreach ($categories as $Category)
+        @foreach ($categories as $category)
         <tr>
-            <th>{{ $Category->name }}</th>
+            <th>{{ $category->name }}</th>
+            <th>
+                <a href="{{ route('dashboard.products.index', ['category_id' => $category->id]) }}"
+                    class="btn btn-sm btn-primary">Show</a>
+            </th>
             <th>
                 @if (auth()->user()->hasPermission('categories_update'))
-                <a href=" {{ route('dashboard.categories.edit', $Category->id) }} " class="btn btn-info btn-sm"><i
+                <a href=" {{ route('dashboard.categories.edit', $category->id) }} " class="btn btn-info btn-sm"><i
                         class="fa fa-edit"></i> Edit</a>
                 @else
                 <button class="btn btn-info btn-sm" type="submit" disabled><i class="fa fa-edit"></i> Edit</button>
                 @endif
 
                 @if (auth()->user()->hasPermission('categories_delete'))
-                <form method="POST" action=" {{ route('dashboard.categories.destroy', $Category->id) }} "
+                <form method="POST" action=" {{ route('dashboard.categories.destroy', $category->id) }} "
                     style="display: inline-block">
                     @csrf
                     @method('delete')

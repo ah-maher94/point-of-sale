@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $append = ['image_path', 'profit_percentage'];
+
     protected $fillable = [
         'name',
         'description',
@@ -21,5 +23,14 @@ class Product extends Model
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function getImagePathAttribute(){
+        return asset('uploads/products/'. $this->image);
+    }
+
+    public function getProfitPercentageAttribute(){
+        $profitPercentage = (($this->sale_price - $this->purchase_price) * 100) / $this->purchase_price;
+        return number_format($profitPercentage, 2);
     }
 }

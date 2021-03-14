@@ -21,14 +21,23 @@
 
 <!-- SEARCH FORM -->
 <form class="form-inline ml-3" method="GET" action="{{ route('dashboard.products.index') }}">
-    <div class="input-group input-group-sm">
+    <div class="input-group input-group-sm mr-3">
         <input class="form-control form-control-navbar" type="search" name="search" placeholder="Search"
             aria-label="Search" value="{{ request()->search }}">
-        <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
+    </div>
+
+    <select name="category_id">
+        <option value="">Select Category</option>
+        @foreach ($categories as $category)
+        <option value="{{ $category->id }}" {{ request()->category_id == $category->id ? "selected" : '' }}>
+            {{ $category->name }}</option>
+        @endforeach
+    </select>
+
+    <div class="input-group-append">
+        <button class="btn btn-navbar" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
     </div>
 </form>
 
@@ -57,6 +66,7 @@
                 <th>Image</th>
                 <th>Purchase Price</th>
                 <th>Sale Price</th>
+                <th>Profit %</th>
                 <th>Stock</th>
                 <th>Actions</th>
             </tr>
@@ -69,10 +79,11 @@
             <th>{{ $product->name }}</th>
             <th>{{ $product->description }}</th>
             <th>
-                <img src="{{ asset('uploads/products/'.$product->image) }}" style="width:100px" class="img-thumbnail">
+                <img src="{{ $product->image_path }}" style="width:100px" class="img-thumbnail">
             </th>
             <th>{{ $product->purchase_price }}</th>
             <th>{{ $product->sale_price }}</th>
+            <th>{{ $product->profit_percentage }} %</th>
             <th>{{ $product->stock }}</th>
 
             <th>
