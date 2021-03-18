@@ -55,6 +55,7 @@
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Order</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -66,6 +67,10 @@
             <th>{{ $client->name }}</th>
             <th>{{ implode(' - ', $client->phone) }}</th>
             <th>{{ $client->address }}</th>
+            <th>
+                <a href="{{ route('dashboard.client.orders.create', $client->id) }}" class="btn btn-primary btn-sm">Add
+                    Order</a>
+            </th>
             <th>
                 @if (auth()->user()->hasPermission('clients_update'))
                 <a href=" {{ route('dashboard.clients.edit', $client->id) }} " class="btn btn-info btn-sm"><i

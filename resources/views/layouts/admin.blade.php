@@ -289,6 +289,10 @@ to get the desired effect
     <script src="{{asset('bower_components/admin-lte/plugins/chart.js/Chart.min.js')}}"></script>
     <script src="{{asset('bower_components/admin-lte/dist/js/demo.js')}}"></script>
     <script src="{{asset('bower_components/admin-lte/dist/js/pages/dashboard3.js')}}"></script>
+
+    {{-- custom JS --}}
+    <script src="{{asset('js/custom.js')}}"></script>
+
 </body>
 
 <script>

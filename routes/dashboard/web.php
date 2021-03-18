@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ClientController;
+use App\Http\Controllers\Dashboard\Clients\OrderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,5 +24,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     // client routes
     Route::resource('clients', 'ClientController', ['except'=>['show']]);
 
+    // order routes
+    Route::resource('client.orders', 'Clients\OrderController', ['except'=>['show']]);
 
 });

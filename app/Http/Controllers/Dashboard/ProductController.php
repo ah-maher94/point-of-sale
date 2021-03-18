@@ -48,8 +48,8 @@ class ProductController extends Controller
             Image::make($request->image)->resize(300, null, function($constrain){
                 $constrain->aspectRatio();
             })->save(public_path('uploads/products/'.$request->image->hashName()));
+            $request_data['image'] = $request->image->hashName();
         }
-        $request_data['image'] = $request->image->hashName();
 
         // dd($request_data);
         Product::create($request_data);
