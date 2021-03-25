@@ -29,6 +29,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     
     // order route
     Route::resource('orders', 'OrderController', ['except'=>['show']]);
+    Route::get('/orders/{order}/products', [Order::class, 'getProducts'])->name('order.products');
+
 
 
 

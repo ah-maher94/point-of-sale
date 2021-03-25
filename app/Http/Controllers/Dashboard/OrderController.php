@@ -15,15 +15,9 @@ class OrderController extends Controller
 
     }
 
-    public function edit(Order $order){
+    public function getProducts(Order $order){
+        $products = $order->products;
 
-    }
-
-    public function update(Request $request, Order $order){
-
-    }
-
-    public function destroy(Order $order){
-        
+        return view('dashboard.orders._products', compact('order', 'products'));
     }
 }

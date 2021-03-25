@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 
     $('.add-order-product').on('click', function(){
@@ -46,6 +47,20 @@ $(document).ready(function(){
 
         calculateTotalPrice()
 
+    });
+
+    // display order products
+    $('.order-products').on('click', function(){
+        var url = $(this).data('url');
+        
+        $.ajax({
+            url: url,
+            method: 'get',
+            success: function(data){
+                $('#order-product-list').html(data);
+            }
+
+        })
     });
 
 
