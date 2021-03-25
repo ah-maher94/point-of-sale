@@ -206,6 +206,16 @@ to get the desired effect
                         </li>
                         @endif
 
+                        @if (auth()->user()->hasPermission('orders_read'))
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.orders.index') }}" class="nav-link">
+                                <p>
+                                    Orders
+                                </p>
+                            </a>
+                        </li>
+                        @endif
+
                         @if (auth()->user()->hasPermission('products_read'))
                         <li class="nav-item">
                             <a href="{{ route('dashboard.products.index') }}" class="nav-link">

@@ -115,38 +115,38 @@
                 </div><!-- end of box header -->
 
                 <div class="box-body">
-                    {{-- 
-                    <form action="{{ route('dashboard.client.orders.store', $client->id) }}" method="post">
 
-                    {{ csrf_field() }}
-                    {{ method_field('post') }} --}}
+                    <form action="{{ route('dashboard.client.orders.store', $client->id) }}" method="POST">
 
-                    @include('partials._errors')
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
+                        @include('partials._errors')
 
-                        <tbody class="order-list">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="order-list">
 
 
-                        </tbody>
+                            </tbody>
 
-                    </table><!-- end of table -->
+                        </table><!-- end of table -->
 
-                    <h4>Total : <span class="total-price">0</span></h4>
+                        <h4>Total : <span class="total-price">0</span></h4>
 
-                    <button class="btn btn-primary btn-block disabled" id="add-order-form-btn"><i
-                            class="fa fa-plus"></i>
-                    </button>
+                        <button class="btn btn-primary btn-block" id="add-order-form-btn" disabled><i
+                                class="fa fa-plus"></i>
+                        </button>
 
-                    {{-- </form> --}}
+                    </form>
 
                 </div><!-- end of box body -->
 
