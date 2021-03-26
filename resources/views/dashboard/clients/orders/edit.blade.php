@@ -6,13 +6,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Add Client</h1>
+                <h1>Edit Client</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('dashboard.clients.index') }}">Clients</a></li>
-                    <li class="breadcrumb-item active">Add Order</li>
+                    <li class="breadcrumb-item active">Edit Order</li>
                 </ol>
             </div>
         </div>
@@ -21,7 +21,7 @@
 
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Add Order</h3>
+        <h3 class="card-title">Edit Order</h3>
     </div>
 
     @include('partials._errors')
@@ -74,7 +74,8 @@
                                                 <th>{{ $product->stock }}</th>
                                                 <th>{{ $product->sale_price }}</th>
                                                 <th>
-                                                    <button class="btn btn-success btn-sm add-order-product"
+                                                    <button
+                                                        class="{{ in_array($product->id, $order->products->pluck('id')->toArray()) ? 'btn btn-default disabled btn-sm' : 'btn btn-success btn-sm add-order-product' }}"
                                                         id="product-{{ $product->id }}" data-id="{{ $product->id }}"
                                                         data-name="{{ $product->name }}"
                                                         data-price="{{ $product->sale_price }}">Add</button>
@@ -116,10 +117,11 @@
 
                 <div class="box-body">
 
-                    <form action="{{ route('dashboard.client.orders.store', $client->id) }}" method="POST">
+                    <form action="{{ route('dashboard.client.orders.update', [$client->id, $order->id]) }}"
+                        method="POST">
 
                         {{ csrf_field() }}
-                        {{ method_field('POST') }}
+                        {{ method_field('PUT') }}
 
                         @include('partials._errors')
 
@@ -134,13 +136,30 @@
                             </thead>
 
                             <tbody class="order-list">
+                                @foreach ($order->products as $product)
 
+                                <tr>
+                                    <th>{{ $product->name }}</th>
+                                    <th><input type="number" step="1" value="{{ $product->pivot->quantity }}"
+                                            name="quantities[{{ $product->id }}][quantity]" min="1"
+                                            data-price="{{ $product->sale_price }}" class="quantity">
+                                    </th>
+                                    <th class="product-price">
+                                        {{  $product->pivot->quantity * $product->sale_price}}
+                                    </th>
+                                    <th><button class="btn btn-danger btn-sm remove-order-product"
+                                            data-id="{{ $product->id }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button></th>
+                                </tr>
+
+                                @endforeach
 
                             </tbody>
 
                         </table><!-- end of table -->
 
-                        <h4>Total : <span class="total-price">0</span></h4>
+                        <h4>Total : <span class="total-price">{{ $order->total_price }}</span></h4>
 
                         <button class="btn btn-primary btn-block" id="add-order-form-btn" disabled><i
                                 class="fa fa-plus"></i>

@@ -75,8 +75,8 @@
 
 
                 @if (auth()->user()->hasPermission('orders_update'))
-                <a href=" {{ route('dashboard.orders.edit', $order->id) }} " class="btn btn-info btn-sm"><i
-                        class="fa fa-edit"></i> Edit</a>
+                <a href=" {{ route('dashboard.client.orders.edit', [$order->client, $order->id]) }} "
+                    class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
                 @else
                 <button class="btn btn-info btn-sm" type="submit" disabled><i class="fa fa-edit"></i> Edit</button>
                 @endif

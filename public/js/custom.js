@@ -1,7 +1,8 @@
 
 $(document).ready(function(){
 
-    $('.add-order-product').on('click', function(){
+    // add order products
+    $('body').on('click', '.add-order-product', function(){
         var name = $(this).data('name');
         var id = $(this).data('id');
         var price = $(this).data('price');
@@ -25,14 +26,15 @@ $(document).ready(function(){
         calculateTotalPrice();
     });
 
-
+    // remove order products
     $('body').on('click', '.remove-order-product', function(e){
         e.preventDefault();
 
         var removedProductId = $(this).data('id');
         $(this).closest('tr').remove();
 
-        $('#product-'+removedProductId).removeClass('btn-default').addClass('btn-success').removeAttr('disabled');
+        $('#product-'+removedProductId).removeClass('btn-default').addClass('btn-success')
+        .addClass('add-order-product').removeAttr('disabled').removeClass('disabled');
 
         calculateTotalPrice();
     });
