@@ -44,8 +44,9 @@ $(document).ready(function(){
 
         var productQunatity = $(this).val();
         var productPrice = $(this).data('price');
+        var productTotalPrice = Math.round( (Number(productQunatity) * productPrice * 100) /100);
 
-        $(this).closest('tr').find('.product-price').html(productPrice * productQunatity);
+        $(this).closest('tr').find('.product-price').html(productTotalPrice.toFixed(2));
 
         calculateTotalPrice()
 

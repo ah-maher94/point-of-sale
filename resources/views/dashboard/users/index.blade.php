@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'Admins')
+
 @section('content')
 
 <section class="content-header">

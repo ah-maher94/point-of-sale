@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Home')
 
 @section('content')
 
@@ -16,7 +17,5 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
-Home Page
 
 @endsection

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'Edit Admin')
+
 @section('content')
 
 <section class="content-header mb-5">
