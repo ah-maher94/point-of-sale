@@ -22,5 +22,3 @@
     <h3>Total <span>{{ number_format($order->total_price, 2) }}</span></h3>
 
 </div>
-
-<button class="btn btn-block btn-primary print-btn"><i class="fa fa-print"></i> Print</button>
