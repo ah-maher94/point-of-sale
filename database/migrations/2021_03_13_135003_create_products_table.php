@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->integer('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('image')->default('default.jpg');
             $table->double('purchase_price', 8, 2);
             $table->double('sale_price', 8, 2);
